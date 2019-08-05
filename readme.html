@@ -1,0 +1,3170 @@
+<h1 align=center class=title  >PHPCS STANDARDS</h1><ul class=standard  ><li><h2 class=title id='Generic'  >Generic</h2><ul style="display: none;"><li >Arrays<ol>
+<li><h3>Short Array Syntax</h3>
+<h4>
+    
+    Short array syntax must be used to define arrays.
+    
+    </h4><h5 style='color:green'>Valid: Short form of array.</h5><code><pre>
+        
+$arr = <em>[</em>
+    'foo' => 'bar',
+<em>]</em>;
+        
+        </pre></code><h5 style='color:red'>Invalid: Long form of array.</h5><code><pre>
+        
+$arr = <em>array(</em>
+    'foo' => 'bar',
+<em>)</em>;
+        
+        </pre></code></li><li><h3>Long Array Syntax</h3>
+<h4>
+    
+    Long array syntax must be used to define arrays.
+    
+    </h4><h5 style='color:green'>Valid: Long form of array.</h5><code><pre>
+        
+$arr = <em>array(</em>
+    'foo' => 'bar',
+<em>)</em>;
+        
+        </pre></code><h5 style='color:red'>Invalid: Short form of array.</h5><code><pre>
+        
+$arr = <em>[</em>
+    'foo' => 'bar',
+<em>]</em>;
+        
+        </pre></code></li></ol>
+</li>
+<li >Classes<ol>
+<li><h3>Duplicate Class Names</h3>
+<h4>
+    
+    Class and Interface names should be unique in a project.  They should never be duplicated.
+    
+    </h4><h5 style='color:green'>Valid: A unique class name.</h5><code><pre>
+        
+class <em>Foo</em>
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A class duplicated (including across multiple files).</h5><code><pre>
+        
+class <em>Foo</em>
+{
+}
+
+class <em>Foo</em>
+{
+}
+        
+        </pre></code></li><li><h3>Opening Brace on Same Line</h3>
+<h4>
+    
+    The opening brace of a class must be on the same line after the definition and must be the last thing on that line.
+    
+    </h4><h5 style='color:green'>Valid: Opening brace on the same line.</h5><code><pre>
+        
+class Foo <em>{</em>
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Opening brace on the next line.</h5><code><pre>
+        
+class Foo
+<em>{</em>
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Opening brace not last thing on the line.</h5><code><pre>
+        
+class Foo {<em> // Start of class.</em>
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >CodeAnalysis<ol>
+<li><h3>Assignment In Condition</h3>
+<h4>
+    
+    Variable assignments should not be made within conditions.
+    
+    </h4><h5 style='color:green'>Valid: A variable comparison being executed within a condition.</h5><code><pre>
+        
+if (<em>$test === 'abc'</em>) {
+    // Code.
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A variable assignment being made within a condition.</h5><code><pre>
+        
+if (<em>$test = 'abc'</em>) {
+    // Code.
+}
+        
+        </pre></code></li><li><h3>Empty Statements</h3>
+<h4>
+    
+    Control Structures must have at least one statement inside of the body.
+    
+    </h4><h5 style='color:green'>Valid: There is a statement inside the control structure.</h5><code><pre>
+        
+if ($test) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: The control structure has no statements.</h5><code><pre>
+        
+if ($test) {
+    <em>// do nothing</em>
+}
+        
+        </pre></code></li><li><h3>Condition-Only For Loops</h3>
+<h4>
+    
+    For loops that have only a second expression (the condition) should be converted to while loops.
+    
+    </h4><h5 style='color:green'>Valid: A for loop is used with all three expressions.</h5><code><pre>
+        
+for (<em>$i = 0</em>; $i < 10; <em>$i++</em>) {
+    echo "{$i}\n";
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A for loop is used without a first or third expression.</h5><code><pre>
+        
+for (<em></em>;$test;<em></em>) {
+    $test = doSomething();
+}
+        
+        </pre></code></li><li><h3>For Loops With Function Calls in the Test</h3>
+<h4>
+    
+    For loops should not call functions inside the test for the loop when they can be computed beforehand.
+    
+    </h4><h5 style='color:green'>Valid: A for loop that determines its end condition before the loop starts.</h5><code><pre>
+        
+<em>$end = count($foo);</em>
+for ($i = 0; $i < $end; $i++) {
+    echo $foo[$i]."\n";
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A for loop that unnecessarily computes the same value on every iteration.</h5><code><pre>
+        
+for ($i = 0; $i < <em>count($foo)</em>; $i++) {
+    echo $foo[$i]."\n";
+}
+        
+        </pre></code></li><li><h3>Jumbled Incrementers</h3>
+<h4>
+    
+    Incrementers in nested loops should use different variable names.
+    
+    </h4><h5 style='color:green'>Valid: Two different variables being used to increment.</h5><code><pre>
+        
+for ($i = 0; $i < 10; <em>$i++</em>) {
+    for ($j = 0; $j < 10; <em>$j++</em>) {
+    }
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Inner incrementer is the same variable name as the outer one.</h5><code><pre>
+        
+for ($i = 0; $i < 10; <em>$i++</em>) {
+    for ($j = 0; $j < 10; <em>$i++</em>) {
+    }
+}
+        
+        </pre></code></li><li><h3>Unconditional If Statements</h3>
+<h4>
+    
+    If statements that are always evaluated should not be used.
+    
+    </h4><h5 style='color:green'>Valid: An if statement that only executes conditionally.</h5><code><pre>
+        
+if (<em>$test</em>) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: An if statement that is always performed.</h5><code><pre>
+        
+if (<em>true</em>) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: An if statement that only executes conditionally.</h5><code><pre>
+        
+if (<em>$test</em>) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: An if statement that is never performed.</h5><code><pre>
+        
+if (<em>false</em>) {
+    $var = 1;
+}
+        
+        </pre></code></li><li><h3>Unnecessary Final Modifiers</h3>
+<h4>
+    
+    Methods should not be declared final inside of classes that are declared final.
+    
+    </h4><h5 style='color:green'>Valid: A method in a final class is not marked final.</h5><code><pre>
+        
+final class Foo
+{
+    public function bar()
+    {
+    }
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A method in a final class is also marked final.</h5><code><pre>
+        
+final class Foo
+{
+    public <em>final</em> function bar()
+    {
+    }
+}
+        
+        </pre></code></li><li><h3>Unused function parameters</h3>
+<h4>
+    
+    All parameters in a functions signature should be used within the function.
+    
+    </h4><h5 style='color:green'>Valid: All the parameters are used.</h5><code><pre>
+        
+function addThree($a, $b, $c)
+{
+    return <em>$a + $b + $c</em>;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: One of the parameters is not being used.</h5><code><pre>
+        
+function addThree($a, $b, $c)
+{
+    return <em>$a + $b</em>;
+}
+        
+        </pre></code></li><li><h3>Useless Overriding Methods</h3>
+<h4>
+    
+    Methods should not be defined that only call the parent method.
+    
+    </h4><h5 style='color:green'>Valid: A method that extends functionality on a parent method.</h5><code><pre>
+        
+final class Foo
+{
+    public function bar()
+    {
+        parent::bar();
+        <em>$this->doSomethingElse();</em>
+    }
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: An overriding method that only calls the parent.</h5><code><pre>
+        
+final class Foo
+{
+    public function bar()
+    {
+        <em>parent::bar();</em>
+    }
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Commenting<ol>
+<li><h3>Fixme Comments</h3>
+<h4>
+    
+    FIXME Statements should be taken care of.
+    
+    </h4><h5 style='color:green'>Valid: A comment without a fixme.</h5><code><pre>
+        
+// <em>Handle strange case</em>
+if ($test) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A fixme comment.</h5><code><pre>
+        
+// <em>FIXME</em>: This needs to be fixed!
+if ($test) {
+    $var = 1;
+}
+        
+        </pre></code></li><li><h3>Todo Comments</h3>
+<h4>
+    
+    TODO Statements should be taken care of.
+    
+    </h4><h5 style='color:green'>Valid: A comment without a todo.</h5><code><pre>
+        
+// <em>Handle strange case</em>
+if ($test) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A todo comment.</h5><code><pre>
+        
+// <em>TODO</em>: This needs to be fixed!
+if ($test) {
+    $var = 1;
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >ControlStructures<ol>
+<li><h3>Disallow Yoda conditions</h3>
+<h4>
+    
+    Yoda conditions are disallowed.
+    
+    </h4><h5 style='color:green'>Valid: value to be asserted must go on the right side of the comparison.</h5><code><pre>
+        
+if ($test === null) <em>{</em>
+    $var = 1;
+<em>}</em>
+        
+        </pre></code><h5 style='color:red'>Invalid: value to be asserted must not be on the left.</h5><code><pre>
+        
+if (null === $test) <em>{</em>
+    $var = 1;
+<em>}</em>
+        
+        </pre></code></li><li><h3>Inline Control Structures</h3>
+<h4>
+    
+    Control Structures should use braces.
+    
+    </h4><h5 style='color:green'>Valid: Braces are used around the control structure.</h5><code><pre>
+        
+if ($test) <em>{</em>
+    $var = 1;
+<em>}</em>
+        
+        </pre></code><h5 style='color:red'>Invalid: No braces are used for the control structure..</h5><code><pre>
+        
+if ($test)
+    $var = 1;
+        
+        </pre></code></li></ol>
+</li>
+<li >Debug<ol>
+<li><h3>Closure Linter</h3>
+<h4>
+    
+    All javascript files should pass basic Closure Linter tests.
+    
+    </h4><h5 style='color:green'>Valid: Valid JS Syntax is used.</h5><code><pre>
+        
+var foo = [1, 2<em></em>];
+        
+        </pre></code><h5 style='color:red'>Invalid: Trailing comma in a javascript array.</h5><code><pre>
+        
+var foo = [1, 2<em>,</em>];
+        
+        </pre></code></li><li><h3>CSSLint</h3>
+<h4>
+    
+    All css files should pass the basic csslint tests.
+    
+    </h4><h5 style='color:green'>Valid: Valid CSS Syntax is used.</h5><code><pre>
+        
+.foo: { width: 100<em></em>%; }
+        
+        </pre></code><h5 style='color:red'>Invalid: The CSS has a typo in it.</h5><code><pre>
+        
+.foo: { width: 100<em> </em>%; }
+        
+        </pre></code></li><li><h3>JSHint</h3>
+<h4>
+    
+    All javascript files should pass basic JSHint tests.
+    
+    </h4><h5 style='color:green'>Valid: Valid JS Syntax is used.</h5><code><pre>
+        
+<em>var</em> foo = 5;
+        
+        </pre></code><h5 style='color:red'>Invalid: The Javascript is using an undefined variable.</h5><code><pre>
+        
+<em></em>foo = 5;
+        
+        </pre></code></li></ol>
+</li>
+<li >Files<ol>
+<li><h3>Byte Order Marks</h3>
+<h4>
+    
+    Byte Order Marks that may corrupt your application should not be used.  These include 0xefbbbf (UTF-8), 0xfeff (UTF-16 BE) and 0xfffe (UTF-16 LE).
+    
+    </h4></li><li><h3>End of File Newline</h3>
+<h4>
+    
+    Files should end with a newline character.
+    
+    </h4></li><li><h3>No End of File Newline</h3>
+<h4>
+    
+    Files should not end with a newline character.
+    
+    </h4></li><li><h3>Inline HTML</h3>
+<h4>
+    
+    Files that contain php code should only have php code and should not have any "inline html".
+    
+    </h4><h5 style='color:green'>Valid: A php file with only php code in it.</h5><code><pre>
+        
+&lt;?php
+$foo = 'bar';
+echo $foo . 'baz';
+        
+        </pre></code><h5 style='color:red'>Invalid: A php file with html in it outside of the php tags.</h5><code><pre>
+        
+<em>some string here</em>
+&lt;?php
+$foo = 'bar';
+echo $foo . 'baz';
+        
+        </pre></code></li><li><h3>Line Endings</h3>
+<h4>
+    
+    Unix-style line endings are preferred ("\n" instead of "\r\n").
+    
+    </h4></li><li><h3>Line Length</h3>
+<h4>
+    
+    It is recommended to keep lines at approximately 80 characters long for better code readability.
+    
+    </h4></li><li><h3>Lowercased Filenames</h3>
+<h4>
+    
+    Lowercase filenames are required.
+    
+    </h4></li><li><h3>One Class Per File</h3>
+<h4>
+    
+    There should only be one class defined in a file.
+    
+    </h4><h5 style='color:green'>Valid: Only one class in the file.</h5><code><pre>
+        
+&lt;?php
+<em>class Foo</em>
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple classes defined in one file.</h5><code><pre>
+        
+&lt;?php
+<em>class Foo</em>
+{
+}
+
+<em>class Bar</em>
+{
+}
+        
+        </pre></code></li><li><h3>One Interface Per File</h3>
+<h4>
+    
+    There should only be one interface defined in a file.
+    
+    </h4><h5 style='color:green'>Valid: Only one interface in the file.</h5><code><pre>
+        
+&lt;?php
+<em>interface Foo</em>
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple interfaces defined in one file.</h5><code><pre>
+        
+&lt;?php
+<em>interface Foo</em>
+{
+}
+
+<em>interface Bar</em>
+{
+}
+        
+        </pre></code></li><li><h3>One Object Structure Per File</h3>
+<h4>
+    
+    There should only be one class or interface or trait defined in a file.
+    
+    </h4><h5 style='color:green'>Valid: Only one object structure in the file.</h5><code><pre>
+        
+&lt;?php
+<em>trait Foo</em>
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple object structures defined in one file.</h5><code><pre>
+        
+&lt;?php
+<em>trait Foo</em>
+{
+}
+
+<em>class Bar</em>
+{
+}
+        
+        </pre></code></li><li><h3>One Trait Per File</h3>
+<h4>
+    
+    There should only be one trait defined in a file.
+    
+    </h4><h5 style='color:green'>Valid: Only one trait in the file.</h5><code><pre>
+        
+&lt;?php
+<em>trait Foo</em>
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple traits defined in one file.</h5><code><pre>
+        
+&lt;?php
+<em>trait Foo</em>
+{
+}
+
+<em>trait Bar</em>
+{
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Formatting<ol>
+<li><h3>Multiple Statements On a Single Line</h3>
+<h4>
+    
+    Multiple statements are not allowed on a single line.
+    
+    </h4><h5 style='color:green'>Valid: Two statements are spread out on two separate lines.</h5><code><pre>
+        
+$foo = 1;
+$bar = 2;
+        
+        </pre></code><h5 style='color:red'>Invalid: Two statements are combined onto one line.</h5><code><pre>
+        
+$foo = 1; $bar = 2;
+        
+        </pre></code></li><li><h3>Aligning Blocks of Assignments</h3>
+<h4>
+    
+      There should be one space on either side of an equals sign used to assign a value to a variable. In the case of a block of related assignments, more space may be inserted to promote readability.
+    
+    </h4><h5 style='color:green'>Equals signs aligned</h5><code><pre>
+        
+$shortVar        <em>=</em> (1 + 2);
+$veryLongVarName <em>=</em> 'string';
+$var             <em>=</em> foo($bar, $baz, $quux);
+        
+        </pre></code><h5 style='color:green'>Not aligned; harder to read</h5><code><pre>
+        
+$shortVar <em>=</em> (1 + 2);
+$veryLongVarName <em>=</em> 'string';
+$var <em>=</em> foo($bar, $baz, $quux);
+        
+        </pre></code><h4>
+    
+      When using plus-equals, minus-equals etc. still ensure the equals signs are aligned to one space after the longest variable name.
+    
+    </h4><h5 style='color:green'>Equals signs aligned; only one space after longest var name</h5><code><pre>
+        
+$shortVar       <em>+= </em>1;
+$veryLongVarName<em> = </em>1;
+        
+        </pre></code><h5 style='color:green'>Two spaces after longest var name</h5><code><pre>
+        
+$shortVar       <em> += </em>1;
+$veryLongVarName<em>  = </em>1;
+        
+        </pre></code><h5 style='color:green'>Equals signs aligned</h5><code><pre>
+        
+$shortVar       <em>  = </em>1;
+$veryLongVarName<em> -= </em>1;
+        
+        </pre></code><h5 style='color:green'>Equals signs not aligned</h5><code><pre>
+        
+$shortVar       <em> = </em>1;
+$veryLongVarName<em> -= </em>1;
+        
+        </pre></code></li><li><h3>Space After Casts</h3>
+<h4>
+    
+    Spaces are not allowed after casting operators.
+    
+    </h4><h5 style='color:green'>Valid: A cast operator is immediately before its value.</h5><code><pre>
+        
+$foo = (string)1;
+        
+        </pre></code><h5 style='color:red'>Invalid: A cast operator is followed by whitespace.</h5><code><pre>
+        
+$foo = (string)<em> </em>1;
+        
+        </pre></code></li><li><h3>Space After Casts</h3>
+<h4>
+    
+    Exactly one space is allowed after a cast.
+    
+    </h4><h5 style='color:green'>Valid: A cast operator is followed by one space.</h5><code><pre>
+        
+$foo = (string)<em> </em>1;
+        
+        </pre></code><h5 style='color:red'>Invalid: A cast operator is not followed by whitespace.</h5><code><pre>
+        
+$foo = (string)<em></em>1;
+        
+        </pre></code></li><li><h3>Space After NOT operator</h3>
+<h4>
+    
+    Exactly one space is allowed after the NOT operator.
+    
+    </h4><h5 style='color:green'>Valid: A NOT operator followed by one space.</h5><code><pre>
+        
+if (!<em> </em>$someVar || !<em> </em>$x instanceOf stdClass) {};
+        
+        </pre></code><h5 style='color:red'>Invalid: A NOT operator not followed by whitespace.</h5><code><pre>
+        
+if (!<em></em>$someVar || !<em></em>$x instanceOf stdClass) {};
+        
+        </pre></code><h5 style='color:red'>Invalid: A NOT operator followed by a new line or more than one space.</h5><code><pre>
+        
+if (!<em>     </em>$someVar || !<em>
+    </em>$x instanceOf stdClass) {};
+        
+        </pre></code></li></ol>
+</li>
+<li >Functions<ol>
+<li><h3>Call-Time Pass-By-Reference</h3>
+<h4>
+    
+    Call-time pass-by-reference is not allowed. It should be declared in the function definition.
+    
+    </h4><h5 style='color:green'>Valid: Pass-by-reference is specified in the function definition.</h5><code><pre>
+        
+function foo(<em>&</em>$bar)
+{
+    $bar++;
+}
+
+$baz = 1;
+foo($baz);
+        
+        </pre></code><h5 style='color:red'>Invalid: Pass-by-reference is done in the call to a function.</h5><code><pre>
+        
+function foo($bar)
+{
+    $bar++;
+}
+
+$baz = 1;
+foo(<em>&</em>$baz);
+        
+        </pre></code></li><li><h3>Function Argument Spacing</h3>
+<h4>
+    
+    Function arguments should have one space after a comma, and single spaces surrounding the equals sign for default values.
+    
+    </h4><h5 style='color:green'>Valid: Single spaces after a comma.</h5><code><pre>
+        
+function foo($bar,<em> </em>$baz)
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No spaces after a comma.</h5><code><pre>
+        
+function foo($bar,<em></em>$baz)
+{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Single spaces around an equals sign in function declaration.</h5><code><pre>
+        
+function foo($bar, $baz<em> </em>=<em> </em>true)
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No spaces around an equals sign in function declaration.</h5><code><pre>
+        
+function foo($bar, $baz<em></em>=<em></em>true)
+{
+}
+        
+        </pre></code></li><li><h3>Opening Brace in Function Declarations</h3>
+<h4>
+    
+    Function declarations follow the "BSD/Allman style". The function brace is on the line following the function declaration and is indented to the same column as the start of the function declaration.
+    
+    </h4><h5 style='color:green'>Valid: brace on next line</h5><code><pre>
+        
+function fooFunction($arg1, $arg2 = '')
+<em>{</em>
+    ...
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: brace on same line</h5><code><pre>
+        
+function fooFunction($arg1, $arg2 = '') <em>{</em>
+    ...
+}
+        
+        </pre></code></li><li><h3>Opening Brace in Function Declarations</h3>
+<h4>
+    
+    Function declarations follow the "Kernighan/Ritchie style". The function brace is on the same line as the function declaration. One space is required between the closing parenthesis and the brace.
+    
+    </h4><h5 style='color:green'>Valid: brace on same line</h5><code><pre>
+        
+function fooFunction($arg1, $arg2 = '')<em> {</em>
+    ...
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: brace on next line</h5><code><pre>
+        
+function fooFunction($arg1, $arg2 = '')
+<em>{</em>
+    ...
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Metrics<ol>
+<li><h3>Cyclomatic Complexity</h3>
+<h4>
+    
+    Functions should not have a cyclomatic complexity greater than 20, and should try to stay below a complexity of 10.
+    
+    </h4></li><li><h3>Nesting Level</h3>
+<h4>
+    
+    Functions should not have a nesting level greater than 10, and should try to stay below 5.
+    
+    </h4></li></ol>
+</li>
+<li >NamingConventions<ol>
+<li><h3>camelCaps Function Names</h3>
+<h4>
+    
+    Functions should use camelCaps format for their names. Only PHP's magic methods should use a double underscore prefix.
+    
+    </h4><h5 style='color:green'>Valid: A function in camelCaps format.</h5><code><pre>
+        
+function <em>doSomething</em>()
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A function in snake_case format.</h5><code><pre>
+        
+function <em>do_something</em>()
+{
+}
+        
+        </pre></code></li><li><h3>Constructor name</h3>
+<h4>
+    
+    Constructors should be named __construct, not after the class.
+    
+    </h4><h5 style='color:green'>Valid: The constructor is named __construct.</h5><code><pre>
+        
+class Foo
+{
+    function <em>__construct</em>()
+    {
+    }
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: The old style class name constructor is used.</h5><code><pre>
+        
+class Foo
+{
+    function <em>Foo</em>()
+    {
+    }
+}
+        
+        </pre></code></li><li><h3>Constant Names</h3>
+<h4>
+    
+     Constants should always be all-uppercase, with underscores to separate words.
+    
+    </h4><h5 style='color:green'>Valid: all uppercase</h5><code><pre>
+        
+define('<em>FOO_CONSTANT</em>', 'foo');
+
+class FooClass
+{
+    const <em>FOO_CONSTANT</em> = 'foo';
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: mixed case</h5><code><pre>
+        
+define('<em>Foo_Constant</em>', 'foo');
+
+class FooClass
+{
+    const <em>foo_constant</em> = 'foo';
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >PHP<ol>
+<li><h3>Backtick Operator</h3>
+<h4>
+    
+    Disallow the use of the backtick operator for execution of shell commands.
+    
+    </h4></li><li><h3>Opening Tag at Start of File</h3>
+<h4>
+    
+    The opening php tag should be the first item in the file.
+    
+    </h4><h5 style='color:green'>Valid: A file starting with an opening php tag.</h5><code><pre>
+        
+<em></em>&lt;?php
+echo 'Foo';
+        
+        </pre></code><h5 style='color:red'>Invalid: A file with content before the opening php tag.</h5><code><pre>
+        
+<em>Beginning content</em>
+&lt;?php
+echo 'Foo';
+        
+        </pre></code></li><li><h3>Closing PHP Tags</h3>
+<h4>
+    
+    All opening php tags should have a corresponding closing tag.
+    
+    </h4><h5 style='color:green'>Valid: A closing tag paired with it's opening tag.</h5><code><pre>
+        
+<em>&lt;?php</em>
+echo 'Foo';
+<em>?></em>
+        
+        </pre></code><h5 style='color:red'>Invalid: No closing tag paired with the opening tag.</h5><code><pre>
+        
+<em>&lt;?php</em>
+echo 'Foo';
+        
+        </pre></code></li><li><h3>Deprecated Functions</h3>
+<h4>
+    
+    Deprecated functions should not be used.
+    
+    </h4><h5 style='color:green'>Valid: A non-deprecated function is used.</h5><code><pre>
+        
+$foo = <em>explode</em>('a', $bar);
+        
+        </pre></code><h5 style='color:red'>Invalid: A deprecated function is used.</h5><code><pre>
+        
+$foo = <em>split</em>('a', $bar);
+        
+        </pre></code></li><li><h3>Alternative PHP Code Tags</h3>
+<h4>
+    
+    Always use <?php ?> to delimit PHP code, do not use the ASP <% %> style tags nor the <script language="php"></script> tags. This is the most portable way to include PHP code on differing operating systems and setups.
+    
+    </h4></li><li><h3>PHP Code Tags</h3>
+<h4>
+    
+    Always use <?php ?> to delimit PHP code, not the <? ?> shorthand. This is the most portable way to include PHP code on differing operating systems and setups.
+    
+    </h4></li><li><h3>Goto</h3>
+<h4>
+    
+    Discourage the use of the PHP `goto` language construct.
+    
+    </h4></li><li><h3>Forbidden Functions</h3>
+<h4>
+    
+    The forbidden functions sizeof() and delete() should not be used.
+    
+    </h4><h5 style='color:green'>Valid: count() is used in place of sizeof().</h5><code><pre>
+        
+$foo = <em>count</em>($bar);
+        
+        </pre></code><h5 style='color:red'>Invalid: sizeof() is used.</h5><code><pre>
+        
+$foo = <em>sizeof</em>($bar);
+        
+        </pre></code></li><li><h3>Lowercase PHP Constants</h3>
+<h4>
+    
+    The <em>true</em>, <em>false</em> and <em>null</em> constants must always be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: lowercase constants</h5><code><pre>
+        
+if ($var === <em>false</em> || $var === <em>null</em>) {
+    $var = <em>true</em>;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: uppercase constants</h5><code><pre>
+        
+if ($var === <em>FALSE</em> || $var === <em>NULL</em>) {
+    $var = <em>TRUE</em>;
+}
+        
+        </pre></code></li><li><h3>Lowercase Keywords</h3>
+<h4>
+    
+    All PHP keywords should be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase array keyword used.</h5><code><pre>
+        
+$foo = <em>array</em>();
+        
+        </pre></code><h5 style='color:red'>Invalid: Non-lowercase array keyword used.</h5><code><pre>
+        
+$foo = <em>Array</em>();
+        
+        </pre></code></li><li><h3>Lowercase PHP Types</h3>
+<h4>
+    
+    All PHP types used for parameter type and return type declarations should be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase type declarations used.</h5><code><pre>
+        
+function myFunction(int $foo) : string {
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Non-lowercase type declarations used.</h5><code><pre>
+        
+function myFunction(<em>Int</em> $foo) : <em>STRING</em> {
+}
+        
+        </pre></code><h4>
+    
+    All PHP types used for type casting should be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase type used.</h5><code><pre>
+        
+$foo = (bool) $isValid;
+        
+        </pre></code><h5 style='color:red'>Invalid: Non-lowercase type used.</h5><code><pre>
+        
+$foo = <em>(BOOL)</em> $isValid;
+        
+        </pre></code></li><li><h3>Silenced Errors</h3>
+<h4>
+    
+    Suppressing Errors is not allowed.
+    
+    </h4><h5 style='color:green'>Valid: isset() is used to verify that a variable exists before trying to use it.</h5><code><pre>
+        
+if (<em>isset($foo)</em> && $foo) {
+    echo "Hello\n";
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Errors are suppressed.</h5><code><pre>
+        
+if (<em>@</em>$foo) {
+    echo "Hello\n";
+}
+        
+        </pre></code></li><li><h3>SAPI Usage</h3>
+<h4>
+    
+    The PHP_SAPI constant should be used instead of php_sapi_name().
+    
+    </h4><h5 style='color:green'>Valid: PHP_SAPI is used.</h5><code><pre>
+        
+if (<em>PHP_SAPI</em> === 'cli') {
+    echo "Hello, CLI user.";
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: php_sapi_name() is used.</h5><code><pre>
+        
+if (<em>php_sapi_name()</em> === 'cli') {
+    echo "Hello, CLI user.";
+}
+        
+        </pre></code></li><li><h3>Uppercase PHP Constants</h3>
+<h4>
+    
+    The <em>true</em>, <em>false</em> and <em>null</em> constants must always be uppercase.
+    
+    </h4><h5 style='color:green'>Valid: uppercase constants</h5><code><pre>
+        
+if ($var === <em>FALSE</em> || $var === <em>NULL</em>) {
+    $var = <em>TRUE</em>;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: lowercase constants</h5><code><pre>
+        
+if ($var === <em>false</em> || $var === <em>null</em>) {
+    $var = <em>true</em>;
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Strings<ol>
+<li><h3>Unnecessary String Concatenation</h3>
+<h4>
+    
+    Strings should not be concatenated together.
+    
+    </h4><h5 style='color:green'>Valid: A string can be concatenated with an expression.</h5><code><pre>
+        
+echo '5 + 2 = ' . (5 + 2);
+        
+        </pre></code><h5 style='color:red'>Invalid: Strings should not be concatenated together.</h5><code><pre>
+        
+echo 'Hello' . ' ' . 'World';
+        
+        </pre></code></li></ol>
+</li>
+<li >VersionControl<ol>
+<li><h3>Subversion Properties</h3>
+<h4>
+    
+    All php files in a subversion repository should have the svn:keywords property set to 'Author Id Revision' and the svn:eol-style property set to 'native'.
+    
+    </h4></li></ol>
+</li>
+<li >WhiteSpace<ol>
+<li><h3>Arbitrary Parentheses Spacing</h3>
+<h4>
+    
+    Arbitrary sets of parentheses should have no spaces inside.
+    
+    </h4><h5 style='color:green'>Valid: no spaces on the inside of a set of arbitrary parentheses.</h5><code><pre>
+        
+$a = (null !== $extra);
+        
+        </pre></code><h5 style='color:red'>Invalid: spaces on the inside of a set of arbitrary parentheses.</h5><code><pre>
+        
+$a = ( null !== $extra );
+        
+        </pre></code><h5 style='color:red'>Invalid: new lines on the inside of a set of arbitrary parentheses.</h5><code><pre>
+        
+$a = (
+    null !== $extra
+);
+        
+        </pre></code></li><li><h3>No Space Indentation</h3>
+<h4>
+    
+    Tabs should be used for indentation instead of spaces.
+    
+    </h4></li><li><h3>No Tab Indentation</h3>
+<h4>
+    
+    Spaces should be used for indentation instead of tabs.
+    
+    </h4></li><li><h3>Scope Indentation</h3>
+<h4>
+    
+    Indentation for control structures, classes, and functions should be 4 spaces per level.
+    
+    </h4><h5 style='color:green'>Valid: 4 spaces are used to indent a control structure.</h5><code><pre>
+        
+if ($test) {
+<em>    </em>$var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: 8 spaces are used to indent a control structure.</h5><code><pre>
+        
+if ($test) {
+<em>        </em>$var = 1;
+}
+        
+        </pre></code></li></ol>
+</li>
+</ul>
+</li>
+<li><h2 class=title id='Laravel'  >Laravel</h2><ul style="display: none;"><a style='display:block' href='#PSR1' >Include rule:PSR1</a><a style='display:block' href='#Generic' >Include rule:Generic</a><a style='display:block' href='#PSR2' >Include rule:PSR2</a><a style='display:block' href='#VariableAnalysis' >Include rule:VariableAnalysis</a><a style='display:block' href='#ImportDetection' >Include rule:ImportDetection</a></ul>
+</li>
+<li><h2 class=title id='MySource'  >MySource</h2><ul style="display: none;"><a style='display:block' href='#Squiz' >Include rule:Squiz</a></ul>
+</li>
+<li><h2 class=title id='PEAR'  >PEAR</h2><ul style="display: none;"><li >Classes<ol>
+<li><h3>Class Declarations</h3>
+<h4>
+    
+    The opening brace of a class must be on the line after the definition by itself.
+    
+    </h4><h5 style='color:green'>Valid: Opening brace on the correct line.</h5><code><pre>
+        
+class Foo
+<em>{</em>
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Opening brace on same line as declaration.</h5><code><pre>
+        
+class Foo <em>{</em>
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Commenting<ol>
+<li><h3>Class Comments</h3>
+<h4>
+    
+    Classes and interfaces must have a non-empty doc comment.  The short description must be on the second line of the comment.  Each description must have one blank comment line before and after.  There must be one blank line before the tags in the comments.  A @version tag must be in Release: package_version format.
+    
+    </h4><h5 style='color:green'>Valid: A doc comment for the class.</h5><code><pre>
+        
+<em>/**
+ * The Foo class.
+ */</em>
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No doc comment for the class.</h5><code><pre>
+        
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: A doc comment for the class.</h5><code><pre>
+        
+<em>/**
+ * The Foo class.
+ */</em>
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Invalid comment type for the class.</h5><code><pre>
+        
+// The Foo class.
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: A doc comment for the class.</h5><code><pre>
+        
+<em>/**
+ * The Foo class.
+ */</em>
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: The blank line after the comment makes it appear as a file comment, not a class comment.</h5><code><pre>
+        
+<em>/**
+ * The Foo class.
+ */</em>
+
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Short description is the second line of the comment.</h5><code><pre>
+        
+/**
+ * <em>The Foo class.</em>
+ */
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: An extra blank line before the short description.</h5><code><pre>
+        
+/**
+ *
+ * <em>The Foo class.</em>
+ */
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Exactly one blank line around descriptions.</h5><code><pre>
+        
+/**
+ * The Foo class.
+ * <em></em>
+ * A helper for the Bar class.
+ * <em></em>
+ * @see Bar
+ */
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Extra blank lines around the descriptions.</h5><code><pre>
+        
+/**
+ * The Foo class.
+ * <em></em>
+ * <em></em>
+ * A helper for the Bar class.
+ * <em></em>
+ * <em></em>
+ * @see Bar
+ */
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Exactly one blank line before the tags.</h5><code><pre>
+        
+/**
+ * The Foo class.
+ * <em></em>
+ * @see Bar
+ */
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Extra blank lines before the tags.</h5><code><pre>
+        
+/**
+ * The Foo class.
+ * <em></em>
+ * <em></em>
+ * @see Bar
+ */
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Version tag is in the correct format.</h5><code><pre>
+        
+/**
+ * The Foo class.
+ *
+ * @version <em>Release: 1.0</em>
+ */
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No Release: text.</h5><code><pre>
+        
+/**
+ * The Foo class.
+ *
+ * @version <em>1.0</em>
+ */
+class Foo
+{
+}
+        
+        </pre></code></li><li><h3>File Comments</h3>
+<h4>
+    
+    Files must have a non-empty doc comment.  The short description must be on the second line of the comment.  Each description must have one blank comment line before and after.  There must be one blank line before the tags in the comments.  There must be a category, package, author, license, and link tag.  There may only be one category, package, subpackage, license, version, since and deprecated tag.  The tags must be in the order category, package, subpackage, author, copyright, license, version, link, see, since, and deprecated.  The php version must be specified.
+    
+    </h4><h5 style='color:green'>Valid: A file comment is used.</h5><code><pre>
+        
+&lt;?php
+<em>/**
+ * Short description here.
+ *
+ * PHP version 5
+ *
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */</em>
+        
+        </pre></code><h5 style='color:red'>Invalid: No doc comment for the class.</h5><code><pre>
+        
+&lt;?php
+<em></em>
+        
+        </pre></code><h5 style='color:green'>Valid: Short description is the second line of the comment.</h5><code><pre>
+        
+&lt;?php
+/**
+ * <em>Short description here.</em>
+ *
+ * PHP version 5
+ *
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:red'>Invalid: An extra blank line before the short description.</h5><code><pre>
+        
+&lt;?php
+/**
+ * <em></em>
+ * <em>Short description here.</em>
+ *
+ * PHP version 5
+ *
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:green'>Valid: Exactly one blank line around descriptions.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ * <em></em>
+ * PHP version 5
+ * <em></em>
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:red'>Invalid: Extra blank lines around the descriptions.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ * <em></em>
+ * <em></em>
+ * PHP version 5
+ * <em></em>
+ * <em></em>
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:green'>Valid: Exactly one blank line before the tags.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ * <em></em>
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:red'>Invalid: Extra blank lines before the tags.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ * <em></em>
+ * <em></em>
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:green'>Valid: All required tags are used.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ *
+ * <em>@category</em> Foo
+ * <em>@package</em> Foo_Helpers
+ * <em>@author</em> Marty McFly <mmcfly@example.com>
+ * <em>@copyright</em> 2013-2014 Foo Inc.
+ * <em>@license</em> MIT License
+ * <em>@link</em> http://example.com
+ */
+        
+        </pre></code><h5 style='color:red'>Invalid: Missing an author tag.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ *
+ * @category Foo
+ * @package Foo_Helpers
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:green'>Valid: Tags that should only be used once are only used once.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ *
+ * <em>@category</em> Foo
+ * <em>@package</em> Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * <em>@license</em> MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple category tags.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ *
+ * <em>@category</em> Foo
+ * <em>@category</em> Bar
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:green'>Valid: PHP version specified.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * <em>PHP version 5</em>
+ *
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:red'>Invalid: Category and package tags are swapped in order.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ *
+ * <em>@package</em> Foo_Helpers
+ * <em>@category</em> Foo
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:green'>Valid: Tags are in the correct order.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * PHP version 5
+ *
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code><h5 style='color:red'>Invalid: No php version specified.</h5><code><pre>
+        
+&lt;?php
+/**
+ * Short description here.
+ *
+ * @category Foo
+ * @package Foo_Helpers
+ * @author Marty McFly <mmcfly@example.com>
+ * @copyright 2013-2014 Foo Inc.
+ * @license MIT License
+ * @link http://example.com
+ */
+        
+        </pre></code></li><li><h3>Function Comments</h3>
+<h4>
+    
+    Functions must have a non-empty doc comment.  The short description must be on the second line of the comment.  Each description must have one blank comment line before and after.  There must be one blank line before the tags in the comments.  There must be a tag for each of the parameters in the right order with the right variable names with a comment.  There must be a return tag.  Any throw tag must have an exception class.
+    
+    </h4><h5 style='color:green'>Valid: A function doc comment is used.</h5><code><pre>
+        
+<em>/**
+ * Short description here.
+ *
+ * @return void
+ */</em>
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: No doc comment for the function.</h5><code><pre>
+        
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:green'>Valid: Short description is the second line of the comment.</h5><code><pre>
+        
+/**
+ * <em>Short description here.</em>
+ *
+ * @return void
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: An extra blank line before the short description.</h5><code><pre>
+        
+/**
+ * <em></em>
+ * <em>Short description here.</em>
+ *
+ * @return void
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:green'>Valid: Exactly one blank line around descriptions.</h5><code><pre>
+        
+/**
+ * Short description here.
+ * <em></em>
+ * Long description here.
+ * <em></em>
+ * @return void
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: Extra blank lines around the descriptions.</h5><code><pre>
+        
+/**
+ * Short description here.
+ * <em></em>
+ * <em></em>
+ * Long description here.
+ * <em></em>
+ * <em></em>
+ * @return void
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:green'>Valid: Exactly one blank line before the tags.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * Long description here.
+ * <em></em>
+ * @return void
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: Extra blank lines before the tags.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * Long description here.
+ * <em></em>
+ * <em></em>
+ * @return void
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:green'>Valid: Throws tag has an exception class.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * @return void
+ * @throws <em>FooException</em>
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: No exception class given for throws tag.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * @return void
+ * <em>@throws</em>
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:green'>Valid: Return tag present.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * <em>@return void</em>
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: No return tag.</h5><code><pre>
+        
+/**
+ * Short description here.
+ */
+ function foo()
+ {
+ }
+        
+        </pre></code><h5 style='color:green'>Valid: Param names are correct.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * @param string <em>$foo</em> Foo parameter
+ * @param string <em>$bar</em> Bar parameter
+ * @return void
+ */
+ function foo(<em>$foo</em>, <em>$bar</em>)
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: Wrong parameter name doesn't match function signature.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * @param string $foo Foo parameter
+ * @param string <em>$qux</em> Bar parameter
+ * @return void
+ */
+ function foo($foo, <em>$bar</em>)
+ {
+ }
+        
+        </pre></code><h5 style='color:green'>Valid: Param names are ordered correctly.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * @param string <em>$foo</em> Foo parameter
+ * @param string <em>$bar</em> Bar parameter
+ * @return void
+ */
+ function foo(<em>$foo</em>, <em>$bar</em>)
+ {
+ }
+        
+        </pre></code><h5 style='color:red'>Invalid: Wrong parameter order.</h5><code><pre>
+        
+/**
+ * Short description here.
+ *
+ * @param string <em>$bar</em> Bar parameter
+ * @param string <em>$foo</em> Foo parameter
+ * @return void
+ */
+ function foo(<em>$foo</em>, <em>$bar</em>)
+ {
+ }
+        
+        </pre></code></li><li><h3>Inline Comments</h3>
+<h4>
+    
+    Perl-style # comments are not allowed.
+    
+    </h4><h5 style='color:green'>Valid: A // style comment.</h5><code><pre>
+        
+<em>//</em> A comment.
+        
+        </pre></code><h5 style='color:red'>Invalid: A # style comment.</h5><code><pre>
+        
+<em>#</em> A comment.
+        
+        </pre></code></li></ol>
+</li>
+<li >ControlStructures<ol>
+<li><h3>Control Structure Signatures</h3>
+<h4>
+    
+    Control structures should use one space around the parentheses in conditions.  The opening brace should be preceded by one space and should be at the end of the line.
+    
+    </h4><h5 style='color:green'>Valid: Correct spacing around the condition.</h5><code><pre>
+        
+if<em> </em>($foo)<em> </em>{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Incorrect spacing around the condition.</h5><code><pre>
+        
+if<em></em>($foo)<em></em>{
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Correct placement of the opening brace.</h5><code><pre>
+        
+if ($foo) <em>{</em>
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Incorrect placement of the opening brace on a new line.</h5><code><pre>
+        
+if ($foo)
+<em>{</em>
+}
+        
+        </pre></code></li><li><h3>Multi-line If Conditions</h3>
+<h4>
+    
+    Multi-line if conditions should be indented one level and each line should begin with a boolean operator.  The end parenthesis should be on a new line.
+    
+    </h4><h5 style='color:green'>Valid: Correct indentation.</h5><code><pre>
+        
+if ($foo
+<em>    </em>&& $bar
+) {
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No indentation used on the condition lines.</h5><code><pre>
+        
+if ($foo
+<em></em>&& $bar
+) {
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Boolean operator at the start of the line.</h5><code><pre>
+        
+if ($foo
+    <em>&&</em> $bar
+) {
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Boolean operator at the end of the line.</h5><code><pre>
+        
+if ($foo <em>&&</em>
+    $bar
+) {
+}
+        
+        </pre></code><h5 style='color:green'>Valid: End parenthesis on a new line.</h5><code><pre>
+        
+if ($foo
+    && $bar
+<em>)</em> {
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: End parenthesis not moved to a new line.</h5><code><pre>
+        
+if ($foo
+    && $bar<em>)</em> {
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Files<ol>
+<li><h3>Including Code</h3>
+<h4>
+    
+    Anywhere you are unconditionally including a class file, use <em>require_once</em>. Anywhere you are conditionally including a class file (for example, factory methods), use <em>include_once</em>. Either of these will ensure that class files are included only once. They share the same file list, so you don't need to worry about mixing them - a file included with <em>require_once</em> will not be included again by <em>include_once</em>.
+    
+    </h4><h4>
+    
+    Note that <em>include_once</em> and <em>require_once</em> are statements, not functions. Parentheses should not surround the subject filename.
+    
+    </h4><h5 style='color:green'>Valid: used as statement</h5><code><pre>
+        
+require_once 'PHP/CodeSniffer.php';
+        
+        </pre></code><h5 style='color:red'>Invalid: used as function</h5><code><pre>
+        
+require_once<em>(</em>'PHP/CodeSniffer.php'<em>)</em>;
+        
+        </pre></code></li><li><h3>Line Length</h3>
+<h4>
+    
+    It is recommended to keep lines at approximately 85 characters long for better code readability.
+    
+    </h4></li></ol>
+</li>
+<li >Formatting<ol>
+<li><h3>Multi-Line Assignment</h3>
+<h4>
+    
+    Multi-line assignment should have the equals sign be the first item on the second line indented correctly.
+    
+    </h4><h5 style='color:green'>Valid: Assignment operator at the start of the second line.</h5><code><pre>
+        
+$foo
+    <em>=</em> $bar;
+        
+        </pre></code><h5 style='color:red'>Invalid: Assignment operator at end of first line.</h5><code><pre>
+        
+$foo <em>=</em>
+    $bar;
+        
+        </pre></code><h5 style='color:green'>Valid: Assignment operator indented one level.</h5><code><pre>
+        
+$foo
+<em>    </em>= $bar;
+        
+        </pre></code><h5 style='color:red'>Invalid: Assignment operator not indented.</h5><code><pre>
+        
+$foo
+<em></em>= $bar;
+        
+        </pre></code></li></ol>
+</li>
+<li >Functions<ol>
+<li><h3>Function Calls</h3>
+<h4>
+    
+      Functions should be called with no spaces between the function name, the opening parenthesis, and the first parameter; and no space between the last parameter, the closing parenthesis, and the semicolon.
+    
+    </h4><h5 style='color:green'>Valid: spaces between parameters</h5><code><pre>
+        
+$var = foo($bar, $baz, $quux);
+        
+        </pre></code><h5 style='color:red'>Invalid: additional spaces used</h5><code><pre>
+        
+$var = foo<em> </em>(<em> </em>$bar, $baz, $quux<em> </em>)<em> </em>;
+        
+        </pre></code></li><li><h3>Function Declarations</h3>
+<h4>
+    
+    There should be exactly 1 space after the function keyword and 1 space on each side of the use keyword.  Closures should use the Kernighan/Ritchie Brace style and other single-line functions should use the BSD/Allman style.  Multi-line function declarations should have the parameter lists indented one level with the closing parenthesis on a newline followed by a single space and the opening brace of the function.
+    
+    </h4><h5 style='color:green'>Valid: Correct spacing around function and use keywords.</h5><code><pre>
+        
+$foo = function<em> </em>()<em> </em>use<em> </em>($bar)<em> </em>{
+};
+        
+        </pre></code><h5 style='color:red'>Invalid: No spacing around function and use keywords.</h5><code><pre>
+        
+$foo = function<em></em>()<em></em>use<em></em>($bar)<em></em>{
+};
+        
+        </pre></code><h5 style='color:green'>Valid: Multi-line function declaration formatted properly.</h5><code><pre>
+        
+function foo(
+<em>    </em>$bar,
+<em>    </em>$baz
+<em>) {</em>
+};
+        
+        </pre></code><h5 style='color:red'>Invalid: Invalid indentation and formatting of closing parenthesis.</h5><code><pre>
+        
+function foo(
+<em></em>$bar,
+<em></em>$baz<em>)</em>
+<em>{</em>
+};
+        
+        </pre></code></li><li><h3>Default Values in Function Declarations</h3>
+<h4>
+    
+    Arguments with default values go at the end of the argument list.
+    
+    </h4><h5 style='color:green'>Valid: argument with default value at end of declaration</h5><code><pre>
+        
+function connect($dsn, <em>$persistent = false</em>)
+{
+    ...
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: argument with default value at start of declaration</h5><code><pre>
+        
+function connect(<em>$persistent = false</em>, $dsn)
+{
+    ...
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >NamingConventions<ol>
+<li><h3>Class Names</h3>
+<h4>
+    
+    Classes should be given descriptive names. Avoid using abbreviations where possible. Class names should always begin with an uppercase letter. The PEAR class hierarchy is also reflected in the class name, each level of the hierarchy separated with a single underscore.
+    
+    </h4><h5 style='color:green'>Examples of valid class names</h5><code><pre>
+        
+Log
+Net_Finger
+HTML_Upload_Error
+        
+        </pre></code><h5 style='color:red'>Examples of invalid class names</h5><code><pre>
+        
+log
+NetFinger
+HTML-Upload-Error
+        
+        </pre></code></li><li><h3>Function and Method Names</h3>
+<h4>
+    
+    Functions and methods should be named using the "studly caps" style (also referred to as "bumpy case" or "camel caps"). Functions should in addition have the package name as a prefix, to avoid name collisions between packages. The initial letter of the name (after the prefix) is lowercase, and each letter that starts a new "word" is capitalized.
+    
+    </h4><h5 style='color:green'>Examples of valid function names</h5><code><pre>
+        
+connect()
+getData()
+buildSomeWidget()
+XML_RPC_serializeData()
+        
+        </pre></code><h5 style='color:red'>Examples of invalid function names</h5><code><pre>
+        
+Connect()
+get_data()
+        
+        </pre></code></li><li><h3>Variable Names</h3>
+<h4>
+    
+    Private member variable names should be prefixed with an underscore and public/protected variable names should not.
+    
+    </h4><h5 style='color:green'>Valid: Proper member variable names.</h5><code><pre>
+        
+class Foo
+{
+    public $<em>publicVar</em>;
+    protected $<em>protectedVar</em>;
+    private $<em>_privateVar</em>;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: underscores used on public/protected variables and not used on private variables.</h5><code><pre>
+        
+class Foo
+{
+    public $<em>_publicVar</em>;
+    protected $<em>_protectedVar</em>;
+    private $<em>privateVar</em>;
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >WhiteSpace<ol>
+<li><h3>Object Operator Indentation</h3>
+<h4>
+    
+    Chained object operators when spread out over multiple lines should be the first thing on the line and be indented by 1 level.
+    
+    </h4><h5 style='color:green'>Valid: Object operator at the start of a new line.</h5><code><pre>
+        
+$foo
+    <em>-></em>bar()
+    <em>-></em>baz();
+        
+        </pre></code><h5 style='color:red'>Invalid: Object operator at the end of the line.</h5><code><pre>
+        
+$foo<em>-></em>
+    bar()<em>-></em>
+    baz();
+        
+        </pre></code><h5 style='color:green'>Valid: Object operator indented correctly.</h5><code><pre>
+        
+$foo
+<em>    </em>->bar()
+<em>    </em>->baz();
+        
+        </pre></code><h5 style='color:red'>Invalid: Object operator not indented correctly.</h5><code><pre>
+        
+$foo
+<em></em>->bar()
+<em></em>->baz();
+        
+        </pre></code></li><li><h3>Closing Brace Indentation</h3>
+<h4>
+    
+    Closing braces should be indented at the same level as the beginning of the scope.
+    
+    </h4><h5 style='color:green'>Valid: Consistent indentation level for scope.</h5><code><pre>
+        
+if ($test) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: The ending brace is indented further than the if statement.</h5><code><pre>
+        
+if ($test) {
+    $var = 1;
+<em>    </em>}
+        
+        </pre></code></li><li><h3>Scope Indentation</h3>
+<h4>
+    
+    Any scope openers except for switch statements should be indented 1 level.  This includes classes, functions, and control structures.
+    
+    </h4><h5 style='color:green'>Valid: Consistent indentation level for scope.</h5><code><pre>
+        
+function foo()
+{
+<em>    </em>if ($test) {
+<em>        </em>$var = 1;
+<em>    </em>}
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Indentation is not used for scope.</h5><code><pre>
+        
+function foo()
+{
+<em></em>if ($test) {
+<em></em>$var = 1;
+<em></em>}
+}
+        
+        </pre></code></li></ol>
+</li>
+</ul>
+</li>
+<li><h2 class=title id='PSR1'  >PSR1</h2><ul style="display: none;"><li >Classes<ol>
+<li><h3>Class Declaration</h3>
+<h4>
+    
+    Each class must be in a file by itself and must be under a namespace (a top-level vendor name).
+    
+    </h4><h5 style='color:green'>Valid: One class in a file.</h5><code><pre>
+        
+&lt;?php
+namespace Foo;
+
+<em>class Bar</em> {
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple classes in a single file.</h5><code><pre>
+        
+&lt;?php
+namespace Foo;
+
+<em>class Bar</em> {
+}
+
+<em>class Baz</em> {
+}
+        
+        </pre></code><h5 style='color:green'>Valid: A vendor-level namespace is used.</h5><code><pre>
+        
+&lt;?php
+<em>namespace Foo;</em>
+
+class Bar {
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No namespace used in file.</h5><code><pre>
+        
+&lt;?php
+class Bar {
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Files<ol>
+<li><h3>Side Effects</h3>
+<h4>
+    
+    A php file should either contain declarations with no side effects, or should just have logic (including side effects) with no declarations.
+    
+    </h4><h5 style='color:green'>Valid: A class defined in a file by itself.</h5><code><pre>
+        
+&lt;?php
+class Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A class defined in a file with other code.</h5><code><pre>
+        
+&lt;?php
+class Foo
+{
+}
+
+<em>echo "Class Foo loaded."</em>
+        
+        </pre></code></li></ol>
+</li>
+<li >Methods<ol>
+<li><h3>Method Name</h3>
+<h4>
+    
+    Method names MUST be declared in camelCase.
+    
+    </h4><h5 style='color:green'>Valid: method name in camelCase.</h5><code><pre>
+        
+class Foo
+{
+    private function <em>doBar</em>()
+    {
+    }
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: method name not in camelCase.</h5><code><pre>
+        
+class Foo
+{
+    private function <em>do_bar</em>()
+    {
+    }
+}
+        
+        </pre></code></li></ol>
+</li>
+</ul>
+</li>
+<li><h2 class=title id='PSR12'  >PSR12</h2><ul style="display: none;"><a style='display:block' href='#PSR1' >Include rule:PSR1</a><li >Classes<ol>
+<li><h3>Class Instantiation</h3>
+<h4>
+    
+    When instantiating a new class, parenthesis MUST always be present even when there are no arguments passed to the constructor.
+    
+    </h4><h5 style='color:green'>Valid: Parenthesis used.</h5><code><pre>
+        
+new Foo();
+        
+        </pre></code><h5 style='color:red'>Invalid: Parenthesis not used.</h5><code><pre>
+        
+new Foo;
+        
+        </pre></code></li></ol>
+</li>
+<li >Functions<ol>
+<li><h3>Nullable Type Declarations Functions</h3>
+<h4>
+        
+    In nullable type declarations there MUST NOT be a space between the question mark and the type.
+    
+    </h4><h5 style='color:green'>Valid: no whitespace used.</h5><code><pre>
+            
+public function functionName(?string $arg1, ?int $arg2): ?string
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: superfluous whitespace used.</h5><code><pre>
+        
+public function functionName(? string $arg1, ? int $arg2): ? string
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: unexpected characters used.</h5><code><pre>
+            
+public function functionName(? /* nullable for a reason */ string $arg1): ?
+    // nullable for a reason
+    string
+{
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Keywords<ol>
+<li><h3>Short Form Type Keywords</h3>
+<h4>
+    
+    Short form of type keywords MUST be used i.e. bool instead of boolean, int instead of integer etc.
+    
+    </h4><h5 style='color:green'>Valid: Short form type used.</h5><code><pre>
+        
+$foo = (bool) $isValid;
+        
+        </pre></code><h5 style='color:red'>Invalid: Long form type type used.</h5><code><pre>
+        
+$foo = <em>(boolean)</em> $isValid;
+        
+        </pre></code></li></ol>
+</li>
+<li >Namespaces<ol>
+<li><h3>Compound Namespace Depth</h3>
+<h4>
+    
+    Compound namespaces with a depth of more than two MUST NOT be used.
+    
+    </h4><h5 style='color:green'>Valid: Max depth of 2.</h5><code><pre>
+        
+use Vendor\Package\SomeNamespace\{
+    SubnamespaceOne\ClassA,
+    SubnamespaceOne\ClassB,
+    SubnamespaceTwo\ClassY,
+    ClassZ,
+};
+        
+        </pre></code><h5 style='color:red'>Invalid: Max depth of 3.</h5><code><pre>
+        
+use Vendor\Package\SomeNamespace\{
+    <em>SubnamespaceOne\AnotherNamespace\ClassA,</em>
+    SubnamespaceOne\ClassB,
+    ClassZ,
+};
+        
+        </pre></code></li></ol>
+</li>
+<li >Operators<ol>
+<li><h3>Operator Spacing</h3>
+<h4>
+    
+    All binary and ternary (but not unary) operators MUST be preceded and followed by at least one space. This includes all arithmetic, comparison, assignment, bitwise, logical (excluding ! which is unary), string concatenation, type operators, trait operators (insteadof and as), and the single pipe operator (e.g. ExceptionType1 | ExceptionType2 $e).
+    
+    </h4><h5 style='color:green'>Valid: At least 1 space used.</h5><code><pre>
+        
+if ($a === $b) {
+    $foo = $bar ?? $a ?? $b;
+} elseif ($a > $b) {
+    $variable = $foo ? 'foo' : 'bar';
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No spacing used.</h5><code><pre>
+        
+if ($a===$b) {
+    $foo=$bar??$a??$b;
+} elseif ($a>$b) {
+    $variable=$foo?'foo':'bar';
+}
+        
+        </pre></code></li></ol>
+</li>
+</ul>
+</li>
+<li><h2 class=title id='PSR2'  >PSR2</h2><ul style="display: none;"><a style='display:block' href='#PSR1' >Include rule:PSR1</a><li >Classes<ol>
+<li><h3>Class Declarations</h3>
+<h4>
+    
+    There should be exactly 1 space between the abstract or final keyword and the class keyword and between the class keyword and the class name.  The extends and implements keywords, if present, must be on the same line as the class name.  When interfaces implemented are spread over multiple lines, there should be exactly 1 interface mentioned per line indented by 1 level.  The closing brace of the class must go on the first line after the body of the class and must be on a line by itself.
+    
+    </h4><h5 style='color:green'>Valid: Correct spacing around class keyword.</h5><code><pre>
+        
+abstract<em> </em>class<em> </em>Foo
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: 2 spaces used around class keyword.</h5><code><pre>
+        
+abstract<em>  </em>class<em>  </em>Foo
+{
+}
+        
+        </pre></code></li><li><h3>Property Declarations</h3>
+<h4>
+    
+    Property names should not be prefixed with an underscore to indicate visibility.  Visibility should be used to declare properties rather than the var keyword.  Only one property should be declared within a statement.  The static declaration must come after the visibility declaration.
+    
+    </h4><h5 style='color:green'>Valid: Correct property naming.</h5><code><pre>
+        
+class Foo
+{
+    private $<em>bar</em>;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: An underscore prefix used to indicate visibility.</h5><code><pre>
+        
+class Foo
+{
+    private $<em>_bar</em>;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Visibility of property declared.</h5><code><pre>
+        
+class Foo
+{
+    <em>private</em> $bar;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Var keyword used to declare property.</h5><code><pre>
+        
+class Foo
+{
+    <em>var</em> $bar;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: One property declared per statement.</h5><code><pre>
+        
+class Foo
+{
+    private $bar;
+    private $baz;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple properties declared in one statement.</h5><code><pre>
+        
+class Foo
+{
+    private <em>$bar, $baz</em>;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: If declared as static, the static declaration must come after the visibility declaration.</h5><code><pre>
+        
+class Foo
+{
+    public <em>static</em> $bar;
+    private $baz;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Static declaration before the visibility declaration.</h5><code><pre>
+        
+class Foo
+{
+    <em>static<em> protected $bar;
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >ControlStructures<ol>
+<li><h3>Control Structure Spacing</h3>
+<h4>
+    
+    Control Structures should have 0 spaces after opening parentheses and 0 spaces before closing parentheses.
+    
+    </h4><h5 style='color:green'>Valid: Correct spacing.</h5><code><pre>
+        
+if (<em></em>$foo<em></em>) {
+    $var = 1;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Whitespace used inside the parentheses.</h5><code><pre>
+        
+if (<em> </em>$foo<em> </em>) {
+    $var = 1;
+}
+        
+        </pre></code></li><li><h3>Elseif Declarations</h3>
+<h4>
+    
+    PHP's elseif keyword should be used instead of else if.
+    
+    </h4><h5 style='color:green'>Valid: Single word elseif keyword used.</h5><code><pre>
+        
+if ($foo) {
+    $var = 1;
+} <em>elseif</em> ($bar) {
+    $var = 2;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Separate else and if keywords used.</h5><code><pre>
+        
+if ($foo) {
+    $var = 1;
+} <em>else if</em> ($bar) {
+    $var = 2;
+}
+        
+        </pre></code></li><li><h3>Switch Declarations</h3>
+<h4>
+    
+    Case statements should be indented 4 spaces from the switch keyword.  It should also be followed by a space.  Colons in switch declarations should not be preceded by whitespace.  Break statements should be indented 4 more spaces from the case statement.  There must be a comment when falling through from one case into the next.
+    
+    </h4><h5 style='color:green'>Valid: Case statement indented correctly.</h5><code><pre>
+        
+switch ($foo) {
+<em>    </em>case 'bar':
+        break;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Case statement not indented 4 spaces.</h5><code><pre>
+        
+switch ($foo) {
+<em></em>case 'bar':
+    break;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Case statement followed by 1 space.</h5><code><pre>
+        
+switch ($foo) {
+    case<em> </em>'bar':
+        break;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Case statement not followed by 1 space.</h5><code><pre>
+        
+switch ($foo) {
+    case<em></em>'bar':
+        break;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Colons not prefixed by whitespace.</h5><code><pre>
+        
+switch ($foo) {
+    case 'bar'<em></em>:
+        break;
+    default<em></em>:
+        break;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Colons prefixed by whitespace.</h5><code><pre>
+        
+switch ($foo) {
+    case 'bar'<em> </em>:
+        break;
+    default<em> </em>:
+        break;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Break statement indented correctly.</h5><code><pre>
+        
+switch ($foo) {
+    case 'bar':
+<em>        </em>break;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: Break statement not indented 4 spaces.</h5><code><pre>
+        
+switch ($foo) {
+    case 'bar':
+<em>    </em>break;
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Comment marking intentional fall-through.</h5><code><pre>
+        
+switch ($foo) {
+    case 'bar':
+    <em>// no break</em>
+    default<em></em>:
+        break;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No comment marking intentional fall-through.</h5><code><pre>
+        
+switch ($foo) {
+    case 'bar':
+    default<em></em>:
+        break;
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Files<ol>
+<li><h3>End File Newline</h3>
+<h4>
+    
+    PHP Files should end with exactly one newline.
+    
+    </h4></li></ol>
+</li>
+<li >Methods<ol>
+<li><h3>Method Declarations</h3>
+<h4>
+    
+    Method names should not be prefixed with an underscore to indicate visibility.  The static keyword, when present, should come after the visibility declaration, and the final and abstract keywords should come before.
+    
+    </h4><h5 style='color:green'>Valid: Correct method naming.</h5><code><pre>
+        
+class Foo
+{
+    private function <em>bar</em>()
+    {
+    }
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: An underscore prefix used to indicate visibility.</h5><code><pre>
+        
+class Foo
+{
+    private function <em>_bar</em>()
+    {
+    }
+}
+        
+        </pre></code><h5 style='color:green'>Valid: Correct ordering of method prefixes.</h5><code><pre>
+        
+class Foo
+{
+    <em>final public static</em> function <em>bar</em>()
+    {
+    }
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: static keyword used before visibility and final used after.</h5><code><pre>
+        
+class Foo
+{
+    <em>static public final</em> function <em>bar</em>()
+    {
+    }
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Namespaces<ol>
+<li><h3>Namespace Declarations</h3>
+<h4>
+    
+    There must be one blank line after the namespace declaration.
+    
+    </h4><h5 style='color:green'>Valid: One blank line after the namespace declaration.</h5><code><pre>
+        
+namespace \Foo\Bar;
+<em></em>
+use \Baz;
+        
+        </pre></code><h5 style='color:red'>Invalid: No blank line after the namespace declaration.</h5><code><pre>
+        
+namespace \Foo\Bar;
+use \Baz;
+        
+        </pre></code></li><li><h3>Namespace Declarations</h3>
+<h4>
+    
+    Each use declaration must contain only one namespace and must come after the first namespace declaration.  There should be one blank line after the final use statement.
+    
+    </h4><h5 style='color:green'>Valid: One use declaration per namespace.</h5><code><pre>
+        
+use \Foo;
+use \Bar;
+        
+        </pre></code><h5 style='color:red'>Invalid: Multiple namespaces in a use declaration.</h5><code><pre>
+        
+use <em>\Foo, \Bar</em>;
+        
+        </pre></code><h5 style='color:green'>Valid: Use statements come after first namespace.</h5><code><pre>
+        
+namespace \Foo;
+
+use \Bar;
+        
+        </pre></code><h5 style='color:red'>Invalid: Namespace declared after use.</h5><code><pre>
+        
+use \Bar;
+
+namespace \Foo;
+        
+        </pre></code><h5 style='color:green'>Valid: A single blank line after the final use statement.</h5><code><pre>
+        
+use \Foo;
+use \Bar;
+<em></em>
+class Baz
+{
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: No blank line after the final use statement.</h5><code><pre>
+        
+use \Foo;
+use \Bar;
+class Baz
+{
+}
+        
+        </pre></code></li></ol>
+</li>
+</ul>
+</li>
+<li><h2 class=title id='Squiz'  >Squiz</h2><ul style="display: none;"><li >Arrays<ol>
+<li><h3>Array Bracket Spacing</h3>
+<h4>
+    
+    When referencing arrays you should not put whitespace around the opening bracket or before the closing bracket.
+    
+    </h4><h5 style='color:green'>Valid: No spaces around the brackets.</h5><code><pre>
+        
+$foo<em></em>[<em></em>'bar'<em></em>];
+
+        </pre></code><h5 style='color:red'>Invalid: Spaces around the brackets.</h5><code><pre>
+        
+$foo<em> </em>[<em> </em>'bar'<em> </em>];
+
+        </pre></code></li><li><h3>Array Declarations</h3>
+<h4>
+    
+    This standard covers all array declarations, regardless of the number and type of values contained within the array.
+    
+    </h4><h4>
+    
+    The <em>array</em> keyword must be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: array keyword lowercase</h5><code><pre>
+        
+$array = <em>a</em>rray('val1', 'val2');
+        
+        </pre></code><h5 style='color:red'>Invalid: first letter capitalised</h5><code><pre>
+        
+$array = <em>A</em>rray('val1', 'val2');
+        
+        </pre></code><h4>
+    
+    The first array key must begin on the line after the <em>array</em> keyword.
+    
+    </h4><h5 style='color:green'>Valid: first key on second line</h5><code><pre>
+        
+$array = array(
+          <em>'key1'</em> => 'value1',
+          'key2' => 'value2',
+         );
+        
+        </pre></code><h5 style='color:red'>Invalid: first key on same line</h5><code><pre>
+        
+$array = array(<em>'key1'</em> => 'value1',
+          'key2' => 'value2',
+         );
+        
+        </pre></code><h4>
+    
+    All array keys must be indented to one space after the start of the <em>array</em> keyword. The closing parenthesis must be aligned with the start of the <em>array</em> keyword.
+    
+    </h4><h5 style='color:green'>Valid: aligned correctly</h5><code><pre>
+        
+$array = array(
+         <em> </em>'key1' => 'value1',
+         <em> </em>'key2' => 'value2',
+         );
+        
+        </pre></code><h5 style='color:red'>Invalid: keys and parenthesis aligned incorrectly</h5><code><pre>
+        
+$array = array(
+         <em>'</em>key1' => 'value1',
+         <em>'</em>key2' => 'value2',
+);
+        
+        </pre></code><h4>
+    
+    All double arrow symbols must be aligned to one space after the longest array key. Alignment must be achieved using spaces.
+    
+    </h4><h5 style='color:green'>Valid: keys and values aligned</h5><code><pre>
+        
+$array = array(
+          'keyTen'<em>    </em>=> 'ValueTen',
+          'keyTwenty'<em> </em>=> 'ValueTwenty',
+         );
+        
+        </pre></code><h5 style='color:red'>Invalid: alignment incorrect</h5><code><pre>
+        
+$array = array(
+          'keyTen'<em> </em>=> 'ValueTen',
+          'keyTwenty'<em> </em>=> 'ValueTwenty',
+         );
+        
+        </pre></code><h4>
+    
+    All array values must be followed by a comma, including the final value.
+    
+    </h4><h5 style='color:green'>Valid: comma after each value</h5><code><pre>
+        
+$array = array(
+          'key1' => 'value1',
+          'key2' => 'value2',
+          'key3' => 'value3'<em>,</em>
+         );
+        
+        </pre></code><h5 style='color:red'>Invalid: no comma after last value</h5><code><pre>
+        
+$array = array(
+          'key1' => 'value1',
+          'key2' => 'value2',
+          'key3' => 'value3'<em> </em>
+         );
+        
+        </pre></code></li></ol>
+</li>
+<li >Classes<ol>
+<li><h3>Lowercase Class Keywords</h3>
+<h4>
+    
+    The php keywords class, interface, trait, extends, implements, abstract, final, var, and const should be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase class keywords.</h5><code><pre>
+        
+<em>final</em> <em>class</em> Foo <em>extends</em> Bar
+{
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Initial capitalization of class keywords.</h5><code><pre>
+        
+<em>Final</em> <em>Class</em> Foo <em>Extends</em> Bar
+{
+}
+
+        </pre></code></li><li><h3>Self Member Reference</h3>
+<h4>
+    
+    The self keyword should be used instead of the current class name, should be lowercase, and should not have spaces before or after it.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase self used.</h5><code><pre>
+        
+<em>self</em>::foo();
+
+        </pre></code><h5 style='color:red'>Invalid: Uppercase self used.</h5><code><pre>
+        
+<em>SELF</em>::foo();
+
+        </pre></code><h5 style='color:green'>Valid: Correct spacing used.</h5><code><pre>
+        
+self<em></em>::<em></em>foo();
+
+        </pre></code><h5 style='color:red'>Invalid: Incorrect spacing used.</h5><code><pre>
+        
+self<em> </em>::<em> </em>foo();
+
+        </pre></code><h5 style='color:green'>Valid: Self used as reference.</h5><code><pre>
+        
+class Foo
+{
+    public static function bar()
+    {
+    }
+
+    public static function baz()
+    {
+        <em>self</em>::bar();
+    }
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Local class name used as reference.</h5><code><pre>
+        
+class <em>Foo</em>
+{
+    public static function bar()
+    {
+    }
+
+    public static function baz()
+    {
+        <em>Foo</em>::bar();
+    }
+}
+
+        </pre></code></li></ol>
+</li>
+<li >Commenting<ol>
+<li><h3>Doc Comment Alignment</h3>
+<h4>
+    
+    The asterisks in a doc comment should align, and there should be one space between the asterisk and tags.
+    
+    </h4><h5 style='color:green'>Valid: Asterisks are aligned.</h5><code><pre>
+        
+/**
+<em> </em>* @see foo()
+<em> </em>*/
+
+        </pre></code><h5 style='color:red'>Invalid: Asterisks are not aligned.</h5><code><pre>
+        
+/**
+<em>  </em>* @see foo()
+<em></em>*/
+
+        </pre></code><h5 style='color:green'>Valid: One space between asterisk and tag.</h5><code><pre>
+        
+/**
+ *<em> </em>@see foo()
+ */
+
+        </pre></code><h5 style='color:red'>Invalid: Incorrect spacing used.</h5><code><pre>
+        
+/**
+ *<em>  </em>@see foo()
+ */
+
+        </pre></code></li><li><h3>Doc Comment Throws Tag</h3>
+<h4>
+    
+    If a function throws any exceptions, they should be documented in a @throws tag.
+    
+    </h4><h5 style='color:green'>Valid: @throws tag used.</h5><code><pre>
+        
+/**
+ * <em>@throws Exception all the time</em>
+ * @return void
+ */
+function foo()
+{
+    throw new Exception('Danger!');
+}
+
+        </pre></code><h5 style='color:red'>Invalid: No @throws tag used for throwing function.</h5><code><pre>
+        
+/**
+ * @return void
+ */
+function foo()
+{
+    throw new Exception('Danger!');
+}
+
+        </pre></code></li></ol>
+</li>
+<li >ControlStructures<ol>
+<li><h3>Foreach Loop Declarations</h3>
+<h4>
+    
+    There should be a space between each element of a foreach loop and the as keyword should be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: Correct spacing used.</h5><code><pre>
+        
+foreach (<em></em>$foo<em> </em>as<em> </em>$bar<em> </em>=><em> </em>$baz<em></em>) {
+    echo $baz;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Invalid spacing used.</h5><code><pre>
+        
+foreach (<em> </em>$foo<em>  </em>as<em>  </em>$bar<em></em>=><em></em>$baz<em> </em>) {
+    echo $baz;
+}
+
+        </pre></code><h5 style='color:green'>Valid: Lowercase as keyword.</h5><code><pre>
+        
+foreach ($foo <em>as</em> $bar => $baz) {
+    echo $baz;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Uppercase as keyword.</h5><code><pre>
+        
+foreach ($foo <em>AS</em> $bar => $baz) {
+    echo $baz;
+}
+
+        </pre></code></li><li><h3>For Loop Declarations</h3>
+<h4>
+    
+    In a for loop declaration, there should be no space inside the brackets and there should be 0 spaces before and 1 space after semicolons.
+    
+    </h4><h5 style='color:green'>Valid: Correct spacing used.</h5><code><pre>
+        
+for (<em></em>$i = 0; $i < 10; $i++<em></em>) {
+    echo $i;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Invalid spacing used inside brackets.</h5><code><pre>
+        
+for (<em> </em>$i = 0; $i < 10; $i++<em> </em>) {
+    echo $i;
+}
+
+        </pre></code><h5 style='color:green'>Valid: Correct spacing used.</h5><code><pre>
+        
+for ($i = 0<em></em>; $i < 10<em></em>; $i++) {
+    echo $i;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Invalid spacing used before semicolons.</h5><code><pre>
+        
+for ($i = 0<em> </em>; $i < 10<em> </em>; $i++) {
+    echo $i;
+}
+
+        </pre></code><h5 style='color:green'>Valid: Correct spacing used.</h5><code><pre>
+        
+for ($i = 0;<em> </em>$i < 10;<em> </em>$i++) {
+    echo $i;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Invalid spacing used after semicolons.</h5><code><pre>
+        
+for ($i = 0;<em></em>$i < 10;<em></em>$i++) {
+    echo $i;
+}
+
+        </pre></code></li><li><h3>Lowercase Control Structure Keywords</h3>
+<h4>
+    
+    The php keywords if, else, elseif, foreach, for, do, switch, while, try, and catch should be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase if keyword.</h5><code><pre>
+        
+<em>if</em> ($foo) {
+    $bar = true;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Uppercase if keyword.</h5><code><pre>
+        
+<em>IF</em> ($foo) {
+    $bar = true;
+}
+
+        </pre></code></li></ol>
+</li>
+<li >Functions<ol>
+<li><h3>Lowercase Built-In functions</h3>
+<h4>
+    
+    All PHP built-in functions should be lowercased when called.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase function call.</h5><code><pre>
+        
+if (<em>isset</em>($foo)) {
+    echo $foo;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: isset not called as lowercase.</h5><code><pre>
+        
+if (<em>isSet</em>($foo)) {
+    echo $foo;
+}
+
+        </pre></code></li><li><h3>Lowercase Function Keywords</h3>
+<h4>
+    
+    The php keywords function, public, private, protected, and static should be lowercase.
+    
+    </h4><h5 style='color:green'>Valid: Lowercase function keyword.</h5><code><pre>
+        
+<em>function</em> foo()
+{
+    return true;
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Uppercase function keyword.</h5><code><pre>
+        
+<em>FUNCTION</em> foo()
+{
+    return true;
+}
+
+        </pre></code></li></ol>
+</li>
+<li >Scope<ol>
+<li><h3>Static This Usage</h3>
+<h4>
+    
+    Static methods should not use $this.
+    
+    </h4><h5 style='color:green'>Valid: Using self:: to access static variables.</h5><code><pre>
+        
+class Foo
+{
+    <em>static</em> function bar()
+    {
+        return <em>self</em>::$staticMember;
+    }
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Using $this-> to access static variables.</h5><code><pre>
+        
+class Foo
+{
+    <em>static</em> function bar()
+    {
+    return <em>$this</em>->$staticMember;
+    }
+}
+
+        </pre></code></li></ol>
+</li>
+<li >Strings<ol>
+<li><h3>Echoed Strings</h3>
+<h4>
+    
+    Simple strings should not be enclosed in parentheses when being echoed.
+    
+    </h4><h5 style='color:green'>Valid: Using echo without parentheses.</h5><code><pre>
+        
+echo<em> </em>"Hello";
+
+        </pre></code><h5 style='color:red'>Invalid: Using echo with parentheses.</h5><code><pre>
+        
+echo<em>(</em>"Hello"<em>)</em>;
+
+        </pre></code></li></ol>
+</li>
+<li >WhiteSpace<ol>
+<li><h3>Cast Whitespace</h3>
+<h4>
+    
+    Casts should not have whitespace inside the parentheses.
+    
+    </h4><h5 style='color:green'>Valid: No spaces.</h5><code><pre>
+        
+$foo = (<em></em>int<em></em>)'42';
+
+        </pre></code><h5 style='color:red'>Invalid: Whitespace used inside parentheses.</h5><code><pre>
+        
+$foo = (<em> </em>int<em> </em>)'42';
+
+        </pre></code></li><li><h3>Function Opening Brace Whitespace</h3>
+<h4>
+    
+    The opening brace for functions should be on a new line with no blank lines surrounding it.
+    
+    </h4><h5 style='color:green'>Valid: Opening brace is on a new line.</h5><code><pre>
+        
+function foo()
+<em>{</em>
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Opening brace is on the same line as the function declaration.</h5><code><pre>
+        
+function foo() <em>{</em>
+}
+
+        </pre></code><h5 style='color:green'>Valid: No blank lines after the opening brace.</h5><code><pre>
+        
+function foo()
+{
+<em>    return 42;</em>
+}
+
+        </pre></code><h5 style='color:red'>Invalid: A blank line after the opening brace.</h5><code><pre>
+        
+function foo()
+{
+<em></em>
+    return 42;
+}
+
+        </pre></code></li><li><h3>Language Construct Whitespace</h3>
+<h4>
+    
+    The php constructs echo, print, return, include, include_once, require, require_once, and new should have one space after them.
+    
+    </h4><h5 style='color:green'>Valid: echo statement with a single space after it.</h5><code><pre>
+        
+echo<em> </em>"hi";
+
+        </pre></code><h5 style='color:red'>Invalid: echo statement with no space after it.</h5><code><pre>
+        
+echo<em></em>"hi";
+
+        </pre></code></li><li><h3>Object Operator Spacing</h3>
+<h4>
+    
+    The object operator (->) should not have any space around it.
+    
+    </h4><h5 style='color:green'>Valid: No spaces around the object operator.</h5><code><pre>
+        
+$foo<em></em>-><em></em>bar();
+
+        </pre></code><h5 style='color:red'>Invalid: Whitespace surrounding the object operator.</h5><code><pre>
+        
+$foo<em> </em>-><em> </em>bar();
+
+        </pre></code></li><li><h3>Scope Keyword Spacing</h3>
+<h4>
+    
+    The php keywords static, public, private, and protected should have one space after them.
+    
+    </h4><h5 style='color:green'>Valid: A single space following the keywords.</h5><code><pre>
+        
+public<em> </em>static<em> </em>function foo()
+{
+}
+
+        </pre></code><h5 style='color:red'>Invalid: Multiple spaces following the keywords.</h5><code><pre>
+        
+public<em>  </em>static<em>  </em>function foo()
+{
+}
+
+        </pre></code></li><li><h3>Semicolon Spacing</h3>
+<h4>
+    
+    Semicolons should not have spaces before them.
+    
+    </h4><h5 style='color:green'>Valid: No space before the semicolon.</h5><code><pre>
+        
+echo "hi"<em></em>;
+
+        </pre></code><h5 style='color:red'>Invalid: Space before the semicolon.</h5><code><pre>
+        
+echo "hi"<em> </em>;
+
+        </pre></code></li></ol>
+</li>
+</ul>
+</li>
+<li><h2 class=title id='Zend'  >Zend</h2><ul style="display: none;"><li >Debug<ol>
+<li><h3>Zend Code Analyzer</h3>
+<h4>
+    
+    PHP Code should pass the zend code analyzer.
+    
+    </h4><h5 style='color:green'>Valid: Valid PHP Code.</h5><code><pre>
+        
+function foo($bar, $baz)
+{
+    return <em>$bar + $baz</em>;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: There is an unused function parameter.</h5><code><pre>
+        
+function foo($bar, $baz)
+{
+    return <em>$bar + 2</em>;
+}
+        
+        </pre></code></li></ol>
+</li>
+<li >Files<ol>
+<li><h3>Closing PHP Tags</h3>
+<h4>
+    
+    Files should not have closing php tags.
+    
+    </h4><h5 style='color:green'>Valid: No closing tag at the end of the file.</h5><code><pre>
+        
+&lt;?php
+$var = 1;
+        
+        </pre></code><h5 style='color:red'>Invalid: A closing php tag is included at the end of the file.</h5><code><pre>
+        
+&lt;?php
+$var = 1;
+<em>?></em>
+        
+        </pre></code></li></ol>
+</li>
+<li >NamingConventions<ol>
+<li><h3>Variable Names</h3>
+<h4>
+    
+    Variable names should be camelCased with the first letter lowercase.  Private and protected member variables should begin with an underscore
+    
+    </h4><h5 style='color:green'>Valid: A multi-word variable uses camel casing.</h5><code><pre>
+        
+<em>$testNumber</em> = 1;
+        
+        </pre></code><h5 style='color:red'>Invalid: A multi-word variable uses underscores and initial capitalization.</h5><code><pre>
+        
+<em>$Test_Number</em> = 1;
+        
+        </pre></code><h5 style='color:green'>Valid: A private member variable begins with an underscore.</h5><code><pre>
+        
+class Foo
+{
+    private $<em>_</em>bar;
+}
+        
+        </pre></code><h5 style='color:red'>Invalid: A private member variable does not begin with an underscore.</h5><code><pre>
+        
+class Foo
+{
+    private $bar;
+}
+        
+        </pre></code></li></ol>
+</li>
+</ul>
+</li>
+</ul>
+<script type="text/javascript">
+var allSpan = document.getElementsByTagName('SPAN');
+for(var i = 0; i < allSpan.length; i++){
+    allSpan[i].onclick=function(){
+        if(this.parentNode){
+            var childList = this.parentNode.getElementsByTagName('UL');
+            for(var j = 0; j< childList.length;j++){
+                var currentState = childList[j].style.display;
+                if(currentState=="none"){
+                    childList[j].style.display="block";
+                }else{
+                    childList[j].style.display="none";
+                }
+            }
+        }
+    }
+}
+</script>
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+$('.standard').find('H2').click(function(e){
+    $(this).parent().children('UL').toggle();
+});
+});
+</script>
